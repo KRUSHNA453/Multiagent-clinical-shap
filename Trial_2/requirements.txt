@@ -1,0 +1,63 @@
+# =============================================================================
+# Trial_2: Multimodal Clinical Intelligence Pipeline — requirements.txt
+# Python 3.10+  |  Install with:  pip install -r requirements.txt
+# NOTE: For GPU support, install PyTorch first from https://pytorch.org/get-started/
+# =============================================================================
+
+# ─── Core Deep Learning ──────────────────────────────────────────────────────
+torch>=2.1.0
+torchvision>=0.16.0
+torchaudio>=2.1.0
+
+# ─── HuggingFace Ecosystem ───────────────────────────────────────────────────
+transformers>=4.38.0        # Bio_ClinicalBERT, tokenizers
+datasets>=2.17.0            # HF dataset utilities
+accelerate>=0.27.0          # Optimized inference / training
+huggingface-hub>=0.21.0     # Model downloads + Inference API
+
+# ─── Multi-Agent Framework ───────────────────────────────────────────────────
+langchain>=0.1.12
+langchain-core>=0.1.32
+langchain-community>=0.0.29
+langchain-huggingface>=0.0.6
+langgraph>=0.0.37
+
+# ─── Retrieval (FAISS) ───────────────────────────────────────────────────────
+faiss-cpu>=1.7.4            # CPU vector search (install faiss-gpu for GPU)
+sentence-transformers>=2.6.0  # Biomedical sentence encoders
+
+# ─── Explainability / XAI ────────────────────────────────────────────────────
+shap>=0.44.0                # SHAP values (text + image)
+lime>=0.2.0.1               # LIME image explainer
+captum>=0.7.0               # Integrated Gradients (PyTorch native XAI)
+grad-cam>=1.5.0             # pytorch-grad-cam (Grad-CAM, Score-CAM, etc.)
+
+# ─── Image Processing ────────────────────────────────────────────────────────
+Pillow>=10.0.0              # Image I/O
+opencv-python-headless>=4.9.0  # CLAHE contrast enhancement, image ops
+albumentations>=1.3.1       # Medical image augmentation pipeline
+scikit-image>=0.22.0        # Image utilities
+
+# ─── Data Science Core ───────────────────────────────────────────────────────
+pandas>=2.1.0
+numpy>=1.26.0
+scikit-learn>=1.4.0         # Classification metrics, confusion matrix
+
+# ─── Visualization ───────────────────────────────────────────────────────────
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.18.0              # Interactive evaluation dashboard
+
+# ─── Utilities ───────────────────────────────────────────────────────────────
+tqdm>=4.66.0
+python-dotenv>=1.0.0
+ipywidgets>=8.1.0           # Notebook interactive widgets
+ipython>=8.20.0
+
+# ─── Jupyter Notebooks ───────────────────────────────────────────────────────
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+nbformat>=5.9.0
+
+# ─── Optional: Experiment Tracking ───────────────────────────────────────────
+# wandb>=0.16.0             # Uncomment if using Weights & Biases

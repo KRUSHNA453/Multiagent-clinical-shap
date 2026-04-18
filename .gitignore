@@ -1,0 +1,15 @@
+# Dataset
+Dataset/
+Trial_2/data/
+
+# Models and outputs
+Trial_2/models/
+Trial_2/outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+*.DS_Store
+.env
