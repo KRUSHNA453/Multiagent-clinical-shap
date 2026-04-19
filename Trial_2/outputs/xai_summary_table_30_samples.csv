@@ -1,0 +1,31 @@
+Sample_ID,True_Label,Predicted_Label,Confidence,Top_SHAP_Tokens,SHAP_Signal_Quality
+MPX2572_synpic17802,Neoplasm,Clinical Sign,21.36%,"year (-0.012), old (-0.012), white (-0.008), male (-0.008), presents (-0.008)",Weak
+MPX1514_synpic26855,Neoplasm,Neoplasm,67.86%,"sister (+0.007), uterine (+0.007), brother (+0.006), died (+0.006), lung (+0.006)",Weak
+MPX1733_synpic55195,Neoplasm,Neoplasm,68.01%,"woman (+0.039), internal (+0.035), canal (+0.033), lesion (+0.029), auditory (+0.025)",Moderate
+MPX1911_synpic23328,Neoplasm,Neoplasm,90.24%,"history (+0.106), enhancing (+0.024), mass (+0.024), mammogram (+0.019), anterior (+0.017)",Strong
+MPX2335_synpic38842,Neoplasm,Neoplasm,81.60%,"percentage (+0.013), enhancement (+0.013), image (+0.012), demonstrates (+0.012), circumscribed (+0.012)",Weak
+MPX1670_synpic39560,Neoplasm,Neoplasm,54.18%,"throughout (+0.015), lesion (+0.015), axial (+0.011), contrast (+0.011), enhanced (+0.011)",Weak
+MPX2427_synpic4861,Vascular_Trauma,Vascular_Trauma,90.93%,"fall (+0.020), shopping (+0.020), cart (+0.020), mild (+0.020), mass (+0.020)",Weak
+MPX2175_synpic59063,Vascular_Trauma,Vascular_Trauma,97.34%,"all (+0.006), very (+0.006), concerning (+0.006), thrombosis (+0.006), impression (+0.005)",Weak
+MPX1333_synpic44970,Vascular_Trauma,Vascular_Trauma,86.45%,"right (+0.011), internal (+0.011), artery (+0.010), occlusion (+0.009), acute (+0.009)",Weak
+MPX1574_synpic16370,Vascular_Trauma,Vascular_Trauma,93.54%,"acute (+0.011), injury (+0.011), history (+0.006), anchor (+0.004), appears (+0.004)",Weak
+MPX2563_synpic41807,Vascular_Trauma,Vascular_Trauma,97.24%,"vertebral (+0.008), artery (+0.008), normal (+0.007), signal (+0.007), within (+0.007)",Weak
+MPX2532_synpic23157,Vascular_Trauma,Neoplasm,35.97%,"axial (+0.015), gre (+0.015), lesion (+0.014), lesion (+0.013), shows (+0.013)",Weak
+MPX2216_synpic34295,Infection_Inflammatory,Infection_Inflammatory,96.33%,"year (+0.004), old (+0.004), image (+0.003), orbits (+0.003), demonstrates (+0.003)",Weak
+MPX2292_synpic43610,Infection_Inflammatory,Infection_Inflammatory,85.86%,"confirms (+0.002), dilated (+0.002), appendicitis (+0.001), fibrosis (+0.001), presents (+0.001)",Weak
+MPX1072_synpic34899,Infection_Inflammatory,Infection_Inflammatory,98.88%,"thyroiditis (+0.004), hashimoto (+0.002), several (+0.002), month (+0.002), history (+0.002)",Weak
+MPX1692_synpic22152,Infection_Inflammatory,Infection_Inflammatory,99.00%,"diverticula (+0.001), noted (+0.001), not (+0.000), shown (+0.000), appendicitis (+0.000)",Weak
+MPX1043_synpic47076,Infection_Inflammatory,Neoplasm,23.22%,"anterior (+0.018), soft (+0.018), tissue (+0.018), mass (+0.018), contiguous (+0.013)",Weak
+MPX1609_synpic19713,Infection_Inflammatory,Infection_Inflammatory,88.58%,"old (+0.001), seizures (+0.001), cystic (+0.001), onset (+0.000), hispanic (+0.000)",Weak
+MPX1956_synpic55001,Other,Clinical Sign,10.07%,"previously (-0.002), healthy (-0.002), left (+0.002), basal (+0.002), ganglia (+0.002)",Weak
+MPX2501_synpic43628,Other,Other,95.06%,"separate (+0.019), collecting (+0.019), systems (+0.019), fuse (+0.019), separate (+0.018)",Weak
+MPX2603_synpic15933,Other,Neoplasm,27.60%,"myometrium (+0.019), along (+0.010), fundus (+0.010), rim (+0.009), lower (+0.009)",Weak
+MPX2433_synpic48299,Other,Infection_Inflammatory,8.82%,"bulbi (+0.003), year (+0.002), old (+0.002), man (+0.002), indicative (+0.002)",Weak
+MPX1938_synpic22902,Other,Infection_Inflammatory,21.79%,"later (+0.008), showed (+0.008), months (+0.008), chest (+0.006), subsequent (+0.006)",Weak
+MPX2002_synpic57895,Other,Vascular_Trauma,40.49%,"left (+0.012), sided (+0.012), vertical (+0.012), vein (+0.012), girl (+0.007)",Weak
+MPX1723_synpic34924,Clinical Sign,Vascular_Trauma,15.78%,"unknown (+0.001), time (+0.001), course (+0.001), stroke (+0.001), right (+0.001)",Weak
+MPX2463_synpic17001,Clinical Sign,Clinical Sign,97.54%,"possible (-0.021), tumor (-0.021), recurrence (-0.012), left (-0.008), enlargement (-0.008)",Weak
+MPX1298_synpic25024,Clinical Sign,Clinical Sign,56.64%,"other (-0.005), significant (-0.005), past (-0.005), medical (-0.005), history (-0.005)",Weak
+MPX2094_synpic31721,Clinical Sign,Clinical Sign,43.53%,"axial (-0.016), images (-0.016), demonstrates (-0.013), carcinoma (-0.012), pleural (-0.011)",Weak
+MPX2583_synpic35302,Clinical Sign,Clinical Sign,65.51%,"density (-0.035), mass (-0.035), present (-0.015), female (-0.006), year (-0.004)",Moderate
+MPX1980_synpic34844,Clinical Sign,Neoplasm,15.27%,"denies (+0.009), history (+0.007), trauma (+0.007), mass (+0.007), spanning (+0.007)",Weak
