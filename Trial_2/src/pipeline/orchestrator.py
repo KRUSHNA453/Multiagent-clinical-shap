@@ -144,18 +144,10 @@ class MultimodalClinicalOrchestrator:
         # Set HuggingFace API token in environment
         os.environ["HUGGINGFACEHUB_API_TOKEN"] = self.config.HUGGINGFACEHUB_API_TOKEN
 
-        self.exp_agent = ExplanationAgent(
-            model_name=self.config.LLM_MODEL,
-            hf_mode=self.config.LLM_MODE,
-        )
-        self.val_agent = ValidationAgent(
-            model_name=self.config.LLM_MODEL,
-            hf_mode=self.config.LLM_MODE,
-        )
-        self.sum_agent = SummaryAgent(
-            model_name=self.config.LLM_MODEL,
-            hf_mode=self.config.LLM_MODE,
-        )
+        # Agents now pull configuration from config.py directly
+        self.exp_agent = ExplanationAgent()
+        self.val_agent = ValidationAgent()
+        self.sum_agent = SummaryAgent()
         logger.info("Multi-agent system initialized.")
 
     # ─────────────────────────────────────────────────────────────────────────
@@ -233,15 +225,11 @@ class MultimodalClinicalOrchestrator:
             confidence=confidence,
             shap_tokens=top_shap_tokens,
             gradcam_region=gradcam_desc,
-            image_modality=image_modality,
-            body_region=body_region,
         )
 
         # Agent 2: Validation
         validation = self.val_agent.validate_prediction(
-            patient_synopsis=clinical_text[:300],
-            predicted_diagnosis=pred_label,
-            confidence=confidence,
+            predicted_label=pred_label,
             retrieved_cases=retrieved,
         )
 
@@ -253,8 +241,6 @@ class MultimodalClinicalOrchestrator:
             clinical_reasoning=reasoning,
             validation_report=validation,
             image_modality=image_modality,
-            body_region=body_region,
-            dominant_modality=dominant_mod,
         )
 
         results["reasoning"]     = reasoning

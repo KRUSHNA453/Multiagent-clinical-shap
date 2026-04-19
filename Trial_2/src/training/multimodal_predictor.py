@@ -173,11 +173,15 @@ class FusionHead(nn.Module):
         fused_dim = image_dim + text_dim  # 1024 + 768 = 1792
 
         self.fusion = nn.Sequential(
-            nn.Linear(fused_dim, hidden_dim),   # Dimensionality reduction
-            nn.LayerNorm(hidden_dim),            # Normalize fused representation
-            nn.ReLU(inplace=False),              # inplace=False required for Grad-CAM backward hooks
-            nn.Dropout(dropout_rate),            # Regularization
-            nn.Linear(hidden_dim, num_classes),  # Final classification logits
+            nn.Linear(fused_dim, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(inplace=False),
+            nn.Dropout(0.4),
+            nn.Linear(512, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(inplace=False),
+            nn.Dropout(0.3),
+            nn.Linear(256, num_classes)
         )
 
     def forward(self, image_emb: torch.Tensor, text_emb: torch.Tensor) -> torch.Tensor:

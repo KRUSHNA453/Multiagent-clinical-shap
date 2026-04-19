@@ -218,61 +218,118 @@ class MultimodalFAISSRetriever:
 
         return results
 
+    @staticmethod
+    def is_same_case(query_id: str, retrieved_id: str) -> bool:
+        """
+        Checks if two image IDs belong to the same patient case (MPX prefix).
+        Example: MPX1879_synpic123 and MPX1879_synpic456 are 'same case'.
+        """
+        if not query_id or not retrieved_id:
+            return False
+        # Extract case ID (prefix before underscore)
+        return query_id.split("_")[0] == retrieved_id.split("_")[0]
+
+    def compute_ndcg_at_k(self, retrieved_labels: List[int], true_label: int, k: int) -> float:
+        """
+        Calculates Normalized Discounted Cumulative Gain (NDCG) at K.
+        Uses scikit-learn for robust normalization against multiple correct hits.
+        """
+        from sklearn.metrics import ndcg_score
+        import numpy as np
+
+        # relevance = 1 if retrieved label matches true label, else 0
+        relevance = [1 if lbl == true_label else 0 for lbl in retrieved_labels[:k]]
+        # Pad to length k if needed
+        relevance = relevance + [0] * (k - len(relevance))
+        # Ideal relevance (all hits at the top)
+        true_relevance = sorted(relevance, reverse=True)
+
+        if sum(true_relevance) == 0:
+            return 0.0
+        
+        # sklearn ndcg_score requires > 1 item
+        if len(relevance) == 1:
+            return float(relevance[0])
+
+        return float(ndcg_score([true_relevance], [relevance]))
+
     def retrieve_metrics(
         self,
         query_labels: List[int],
+        query_ids: List[str],
         retrieved_results: List[List[Dict]],
         k_values: List[int] = [1, 3, 5],
     ) -> Dict:
         """
-        Compute retrieval quality metrics for evaluation.
+        Compute retrieval quality metrics with same-case leakage detection.
 
-        Metrics:
-            MAP@K:  Mean Average Precision at K
-            R@K:    Recall at K (fraction of queries with correct label in top-K)
-            NDCG@K: Normalized Discounted Cumulative Gain
+        Returns two sets of metrics:
+          - 'all': includes near-duplicates from the same patient case.
+          - 'cross_case': excludes same-case results for a realistic benchmark.
 
-        Args:
-            query_labels:     Ground-truth class index per query.
-            retrieved_results: Per-query list of retrieved case dicts (with 'label' key).
-            k_values:         List of K values to evaluate.
-        Returns:
-            Dict of {metric_name: value}.
+        Metrics: MAP@K, Recall@K, NDCG@K.
         """
-        metrics = {}
+        all_metrics = {}
+        cross_case_metrics = {}
+        leakage_hits_at_5 = 0
+        total_slots_at_5 = 0
 
         for k in k_values:
-            ap_scores = []
-            recall_hits = []
-            ndcg_scores = []
+            # Stats for 'All'
+            all_ap, all_recall, all_ndcg = [], [], []
+            # Stats for 'Cross-Case'
+            cc_ap, cc_recall, cc_ndcg = [], [], []
 
-            for query_label, results in zip(query_labels, retrieved_results):
-                # Top-K results
-                top_k_results = results[:k]
-                retrieved_labels = [r.get("label", -1) for r in top_k_results]
+            for q_label, q_id, results in zip(query_labels, query_ids, retrieved_results):
+                # ── ALL RETRIEVALS ──────────────────────────────────────────
+                all_k_results = results[:k]
+                all_ret_labels = [r.get("label", -1) for r in all_k_results]
+                
+                # Tracking leakage at top-5
+                if k == 5:
+                    for r in all_k_results:
+                        total_slots_at_5 += 1
+                        if self.is_same_case(q_id, r.get("image_id", "")):
+                            leakage_hits_at_5 += 1
 
-                # Average Precision @ K
+                # Correct AP
                 hits = 0
-                precision_at_i = []
-                for i, lbl in enumerate(retrieved_labels, 1):
-                    if lbl == query_label:
+                p_at_i = []
+                for i, lbl in enumerate(all_ret_labels, 1):
+                    if lbl == q_label:
                         hits += 1
-                        precision_at_i.append(hits / i)
-                ap = np.mean(precision_at_i) if precision_at_i else 0.0
-                ap_scores.append(ap)
+                        p_at_i.append(hits / i)
+                all_ap.append(np.mean(p_at_i) if p_at_i else 0.0)
+                all_recall.append(float(any(lbl == q_label for lbl in all_ret_labels)))
+                all_ndcg.append(self.compute_ndcg_at_k(all_ret_labels, q_label, k))
 
-                # Recall @ K
-                correct_in_k = any(lbl == query_label for lbl in retrieved_labels)
-                recall_hits.append(float(correct_in_k))
+                # ── CROSS-CASE ONLY ─────────────────────────────────────────
+                # Filter out tokens where is_same_case is True
+                cc_k_results = [r for r in results if not self.is_same_case(q_id, r.get("image_id", ""))][:k]
+                cc_ret_labels = [r.get("label", -1) for r in cc_k_results]
 
-                # NDCG @ K
-                rel = [1 if lbl == query_label else 0 for lbl in retrieved_labels]
-                dcg  = sum(r / np.log2(i + 2) for i, r in enumerate(rel))
-                idcg = sum(1 / np.log2(i + 2) for i in range(min(1, k)))  # ideal = 1 hit
-                ndcg_scores.append(dcg / idcg if idcg > 0 else 0.0)
+                hits_cc = 0
+                p_at_i_cc = []
+                for i, lbl in enumerate(cc_ret_labels, 1):
+                    if lbl == q_label:
+                        hits_cc += 1
+                        p_at_i_cc.append(hits_cc / i)
+                cc_ap.append(np.mean(p_at_i_cc) if p_at_i_cc else 0.0)
+                cc_recall.append(float(any(lbl == q_label for lbl in cc_ret_labels)))
+                cc_ndcg.append(self.compute_ndcg_at_k(cc_ret_labels, q_label, k))
 
-            metrics[f"MAP@{k}"]  = float(np.mean(ap_scores))
-            metrics[f"R@{k}"]    = float(np.mean(recall_hits))
-            metrics[f"NDCG@{k}"] = float(np.mean(ndcg_scores))
+            all_metrics[f"MAP@{k}"] = float(np.mean(all_ap))
+            all_metrics[f"R@{k}"] = float(np.mean(all_recall))
+            all_metrics[f"NDCG@{k}"] = float(np.mean(all_ndcg))
 
-        return metrics
+            cross_case_metrics[f"MAP@{k}"] = float(np.mean(cc_ap))
+            cross_case_metrics[f"R@{k}"] = float(np.mean(cc_recall))
+            cross_case_metrics[f"NDCG@{k}"] = float(np.mean(cc_ndcg))
+
+        leakage_pct = (leakage_hits_at_5 / total_slots_at_5 * 100) if total_slots_at_5 > 0 else 0.0
+
+        return {
+            "all": all_metrics,
+            "cross_case": cross_case_metrics,
+            "leakage_pct_top5": leakage_pct,
+        }

@@ -11,27 +11,25 @@ Usage in any notebook or module:
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️  API KEY REQUIRED
 # ┌──────────────────────────────────────────────────────────────────────────┐
 # │ Service     : HuggingFace Hub                                            │
 # │ Variable    : HF_TOKEN                                                   │
-# │ Where       : config.py → line below (replace YOUR_HF_TOKEN_HERE)       │
-# │ How to get  : https://huggingface.co/settings/tokens                     │
+# │ Where       : .env file (HUGGINGFACEHUB_API_TOKEN)                        │
 # │ Required for: Downloading Bio_ClinicalBERT weights, LLM Inference API   │
 # └──────────────────────────────────────────────────────────────────────────┘
-HF_TOKEN: str = os.getenv("HF_TOKEN", "YOUR_HF_TOKEN_HERE")
+HF_TOKEN: str = os.getenv("HUGGINGFACEHUB_API_TOKEN", "")
+HUGGINGFACEHUB_API_TOKEN: str = HF_TOKEN   # Alias for compatibility
 
-# ⚠️  API KEY REQUIRED (same HF token also serves as the Inference API key)
-# ┌──────────────────────────────────────────────────────────────────────────┐
-# │ Service     : HuggingFace Inference API (for LangChain Agents)           │
-# │ Variable    : HUGGINGFACEHUB_API_TOKEN                                   │
-# │ Where       : config.py → line below                                     │
-# │ How to get  : https://huggingface.co/settings/tokens                     │
-# │ Required for: Explanation, Validation, Summary agents (Qwen LLM calls)  │
-# └──────────────────────────────────────────────────────────────────────────┘
-HUGGINGFACEHUB_API_TOKEN: str = HF_TOKEN   # Reuses same token
+# LLM for multi-agent synthesis
+HF_MODEL: str = "Qwen/Qwen2.5-72B-Instruct"
 
 # ⚠️  API KEY REQUIRED (Optional — for experiment tracking)
 # ┌──────────────────────────────────────────────────────────────────────────┐
@@ -104,7 +102,7 @@ DATASET_SUMMARY_PATH: Path = DATA_DIR / "dataset_summary.json"
 # ─────────────────────────────────────────────────────────────────────────────
 
 CATEGORY_GROUPS: dict = {
-    # Group 0: Neoplasm — all tumor types consolidated
+    # 0: Neoplasm
     "Neoplasm, benign":              0,
     "Neoplasm, carcinoma":           0,
     "Neoplasm, glial":               0,
@@ -113,78 +111,63 @@ CATEGORY_GROUPS: dict = {
     "Neoplasm, malignant (NOS)":     0,
     "Neoplasm, non-glial":           0,
 
-    # Group 1: Trauma — all traumatic injuries
+    # 1: Vascular_Trauma
     "Trauma":                        1,
     "Sports Medicine":               1,
+    "Vascular":                      1,
+    "Hypoxic or Ischemic":           1,
+    "Infarction and/or Necrosis":    1,
 
-    # Group 2: Vascular — vascular pathology
-    "Vascular":                      2,
-    "Hypoxic or Ischemic":           2,
-    "Infarction and/or Necrosis":    2,
+    # 2: Infection_Inflammatory
+    "Infection, bacteria":           2,
+    "Infection, fungi":              2,
+    "Infection, virus":              2,
+    "Infection, parasite":           2,
+    "Infection, NOS":                2,
+    "Inflammatory, non-infectious":  2,
+    "Inflammatory, NOS":             2,
+    "Autoimmune":                    2,
+    "Ophthalmology":                 2,
 
-    # Group 3: Congenital — structural birth anomalies
+    # 3: Other
     "Congenital, malformation":      3,
     "Congenital, genetic":           3,
+    "Degenerative":                  3,
+    "Metabolic (see also Toxic)":    3,
+    "Toxic":                         3,
+    "Endocrine":                     3,
+    "Obstruction or Stenosis":       3,
+    "Iatrogenic or Surgical (complications)": 3,
+    "Physiology":                    3,
+    "Diverticulum":                  3,
+    "Idiopathic or Unknown":         3,
+    "Unsure":                        3,
+    "Differential Diagnosis":        3,
+    "Miscellaneous":                 3,
 
-    # Group 4: Infection — all infectious etiologies
-    "Infection, bacteria":           4,
-    "Infection, fungi":              4,
-    "Infection, virus":              4,
-    "Infection, parasite":           4,
-    "Infection, NOS":                4,
-
-    # Group 5: Inflammatory — non-infectious inflammation
-    "Inflammatory, non-infectious":  5,
-    "Inflammatory, NOS":             5,
-    "Autoimmune":                    5,
-    "Ophthalmology":                 5,
-
-    # Group 6: Degenerative / Metabolic
-    "Degenerative":                  6,
-    "Metabolic (see also Toxic)":    6,
-    "Toxic":                         6,
-    "Endocrine":                     6,
-
-    # Group 7: Obstruction / Mechanical
-    "Obstruction or Stenosis":       7,
-    "Iatrogenic or Surgical (complications)": 7,
-    "Physiology":                    7,
-    "Diverticulum":                  7,
-
-    # Group 8: Idiopathic / Unknown
-    "Idiopathic or Unknown":         8,
-    "Unsure":                        8,
-    "Differential Diagnosis":        8,
-    "Miscellaneous":                 8,
-
-    # Group 9: Clinical Sign / NOS (catch-all)
-    "Clinical Exam Finding or Sign": 9,
-    "Cyst, benign":                  9,
+    # 4: Clinical Sign
+    "Clinical Exam Finding or Sign": 4,
+    "Cyst, benign":                  4,
 }
 
 # Human-readable class names — used in plots, reports, confusion matrices
 CLASS_NAMES: list = [
-    "Neoplasm",          # 0
-    "Trauma",            # 1
-    "Vascular",          # 2
-    "Congenital",        # 3
-    "Infection",         # 4
-    "Inflammatory",      # 5
-    "Degenerative/Metabolic",  # 6
-    "Obstruction/Mechanical",  # 7
-    "Idiopathic/Unknown",      # 8
-    "Clinical Sign/Other",     # 9
+    "Neoplasm",               # 0
+    "Vascular_Trauma",        # 1
+    "Infection_Inflammatory", # 2
+    "Other",                  # 3
+    "Clinical Sign"           # 4
 ]
 NUM_CLASSES: int = len(CLASS_NAMES)
 
 # Default class for categories NOT in CATEGORY_GROUPS above
-DEFAULT_CLASS: int = 9   # Clinical Sign/Other
+DEFAULT_CLASS: int = 4   # Clinical Sign
 
 # ─────────────────────────────────────────────────────────────────────────────
 # TRAINING HYPERPARAMETERS
 # ─────────────────────────────────────────────────────────────────────────────
 BATCH_SIZE: int           = 8       # Reduce to 4 on low-VRAM GPUs
-EPOCHS: int               = 10      # Default training epochs
+EPOCHS: int               = 25      # Default training epochs
 LEARNING_RATE: float      = 2e-5    # AdamW learning rate (standard for fine-tuning BERT)
 WEIGHT_DECAY: float       = 0.01    # L2 regularization
 DROPOUT_RATE: float       = 0.3     # Dropout in fusion head
