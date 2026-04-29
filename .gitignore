@@ -1,0 +1,10 @@
+.env
+models/
+data/faiss_index.bin
+data/faiss_meta.pkl
+__pycache__/
+*.pt
+*.pyc
+
+temp/
+

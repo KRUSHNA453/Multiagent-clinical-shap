@@ -1,0 +1,32 @@
+{
+  "total_samples": 2050,
+  "num_classes": 5,
+  "class_names": [
+    "Neoplasm",
+    "Vascular_Trauma",
+    "Infection_Inflammatory",
+    "Other",
+    "Clinical Sign"
+  ],
+  "class_counts": {
+    "Neoplasm": 550,
+    "Other": 530,
+    "Clinical Sign": 455,
+    "Vascular_Trauma": 363,
+    "Infection_Inflammatory": 152
+  },
+  "modality_counts": {
+    "CT": 1062,
+    "MR": 988
+  },
+  "location_counts": {
+    "Head": 884,
+    "Spine and Muscles": 355,
+    "Thorax": 334,
+    "Abdomen": 319,
+    "Reproductive and Urinary System": 158
+  },
+  "avg_word_count": 117.19268292682926,
+  "avg_text_length": 770.829756097561,
+  "imbalance_ratio": 3.6184210526315788
+}

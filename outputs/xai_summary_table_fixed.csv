@@ -1,0 +1,6 @@
+Sample_ID,True_Label,Predicted_Label,Confidence,Top_SHAP_Tokens,GradCAM_Region,Dominant_Modality,SHAP_Signal_Quality
+MPX1072_synpic34899,Infection_Inflammatory,Infection_Inflammatory,98.88%,"thyroiditis (-0.004), hashimoto (-0.003), dryness (-0.002), irritation (-0.002), gradually (-0.002)",upper-left quadrant,image,Weak
+MPX1646_synpic17398,Vascular_Trauma,Vascular_Trauma,77.16%,"germany (-0.021), global (-0.013), war (-0.013), terrorism (-0.013), craniotomy (-0.010)",upper-left quadrant,image,Moderate
+MPX2501_synpic43628,Other,Other,95.06%,"separate (+0.013), collecting (+0.013), systems (+0.013), fuse (+0.013), proximally (+0.013)",upper-right quadrant,image,Moderate
+MPX1251_synpic27552,Clinical Sign,Neoplasm,48.38%,"anterior (+0.018), longus (+0.018), colli (+0.018), muscle (+0.018), rosenmueller (+0.016)",upper-left quadrant,image,Moderate
+MPX1514_synpic26855,Neoplasm,Neoplasm,67.86%,"sister (+0.006), uterine (+0.006), sister (+0.006), breast (+0.006), kidney (+0.006)",lower-left quadrant,image,Weak

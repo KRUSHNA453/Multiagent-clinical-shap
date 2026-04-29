@@ -1,0 +1,6 @@
+Sample_ID,True_Label,Predicted_Label,Confidence,Top_SHAP_Tokens,GradCAM_Region,Dominant_Modality
+MPX1072_synpic34899,Infection_Inflammatory,Infection_Inflammatory,98.88%,"thy (-0.004), roid (-0.004), itis (-0.004), ,  (-0.004), Has (-0.003)",upper-left quadrant,image
+MPX1646_synpic17398,Vascular_Trauma,Vascular_Trauma,77.16%,"G (-0.021), erman (-0.021), y (-0.021), .  (-0.021), .  (-0.014)",upper-left quadrant,image
+MPX2501_synpic43628,Other,Other,95.06%,"separate  (+0.013), collecting  (+0.013), systems  (+0.013), which  (+0.013), f (+0.013)",upper-right quadrant,image
+MPX1251_synpic27552,Clinical Sign,Neoplasm,48.38%,"anterior  (+0.018), to  (+0.018), the  (+0.018), long (+0.018), us  (+0.018)",upper-left quadrant,image
+MPX1514_synpic26855,Neoplasm,Neoplasm,67.86%,"sister  (+0.006), h (+0.006), / (+0.006), o  (+0.006), u (+0.006)",lower-left quadrant,image

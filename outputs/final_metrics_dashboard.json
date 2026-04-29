@@ -1,0 +1,27 @@
+{
+    "classification": {
+        "test_accuracy": 0.6656,
+        "auc_roc_macro": 0.9148,
+        "cohen_kappa": 0.5727,
+        "mcc": 0.5763,
+        "f1_scores": {
+            "Neoplasm": 0.714,
+            "Vascular_Trauma": 0.744,
+            "Infection_Inflammatory": 0.654,
+            "Other": 0.647,
+            "Clinical Sign": 0.563
+        }
+    },
+    "retrieval": {
+        "recall_at_5": 0.75,
+        "map_at_5": 0.437,
+        "ndcg_at_5": 0.518,
+        "leakage_pct": 0.098
+    },
+    "explainability": {
+        "faithfulness": "MODERATE (56.7%)",
+        "gradcam_quality": "Clinically meaningful (4/5 cases)",
+        "image_dominance_avg": 0.665,
+        "image_dominance_std": 0.034
+    }
+}
