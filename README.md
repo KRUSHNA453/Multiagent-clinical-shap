@@ -1,9 +1,28 @@
-# Trial_2 — Multimodal Clinical Intelligence Pipeline
-# README.md
+# 🏥 Multimodal Clinical Intelligence System with Mission Control UI
 
-# 🏥 Trial_2: Multimodal Clinical Intelligence Pipeline
+> **An end-to-end multimodal AI system for medical image + clinical text disease classification with full XAI, RAG retrieval, and multi-agent synthesis, powered by a futuristic Streamlit dashboard.**
 
-> **An end-to-end multimodal AI system for medical image + clinical text disease classification with full XAI, RAG retrieval, and multi-agent synthesis.**
+**Project:** Clinical AI Dashboard for Advanced Multimodal Analysis  
+**Version:** 2.0 (Streamlit UI + Agents)  
+**Last Updated:** April 29, 2026
+
+---
+
+## 🎯 Quick Start
+
+### Run the Streamlit App (Live Interface)
+```bash
+cd /path/to/Trial_2
+pip install -r requirements.txt
+python3 -m streamlit run app.py --server.port 8505
+# Open: http://localhost:8505
+```
+
+### Run Jupyter Notebooks (Experimental)
+```bash
+jupyter notebook
+# Navigate to notebooks/ and open 01_data_exploration.ipynb through 07_full_pipeline_demo.ipynb
+```
 
 ---
 
@@ -19,6 +38,38 @@ Trial_2 is a significant upgrade over Trial_1, evolving from a **text-only** Bio
 | XAI | SHAP only | **Grad-CAM + SHAP + LIME + Integrated Gradients** |
 | Evaluation | Basic | **10+ metrics + dashboard** |
 | Notebooks | 1 demo notebook | **7 structured experiment notebooks** |
+| **UI** | ❌ | **Streamlit with Mission Control theme** |
+
+---
+
+## 🎨 Streamlit Dashboard Features
+
+### Mission Control Interface
+The Streamlit app (`app.py`) provides a **futuristic "Mission Control" dashboard** with a professional, presentation-ready design:
+
+✨ **UI Components:**
+- **Hero Banner** — Dramatic intro with gradient glows and neon accents
+- **Large Interactive Cards** — Oversized metrics, prediction displays, and controls
+- **Scan Viewer** — Interactive Plotly image viewer with Grad-CAM opacity slider
+- **Explainability Tab** — SHAP importance bars, modality contribution donut chart
+- **Retrieval Tab** — Similar case gallery with similarity scores and rankings
+- **Clinical Report Tab** — Agent-synthesized report with download options (TXT, MD, PDF)
+
+### Workflow (Single Image + Single Query)
+1. **Sidebar:** Upload medical scan (PNG/JPG) + enter clinical notes
+2. **Run Analysis:** One-click pipeline execution
+3. **Tabs:**
+   - **Scan & Grad-CAM:** Original + heatmap overlay with adjustable opacity
+   - **Explainability:** SHAP token importance + modality contribution analysis
+   - **Retrieval (RAG):** Top-K similar cases from FAISS index
+   - **Clinical Report:** Multi-agent synthesized diagnosis report
+4. **Download:** Export report as TXT, MD, or PDF
+
+### Technology Stack
+- **Framework:** Streamlit 1.50.0
+- **Visualizations:** Plotly (interactive charts), Matplotlib (Grad-CAM heatmaps)
+- **Theme:** Dark glassmorphism with neon gradients (purple → cyan → green accents)
+- **Performance:** @st.cache_resource for pipeline lazy-loading
 
 ---
 
@@ -155,7 +206,134 @@ Trial_2/
 
 ---
 
-## 📚 References
+## � Dependencies
+
+**Core Machine Learning:**
+- torch==2.8.0 (CPU or GPU)
+- torchvision, torchaudio
+- transformers==4.57.6 (HuggingFace)
+- scikit-learn, pandas, numpy
+
+**XAI & Visualization:**
+- plotly==6.7.0
+- matplotlib, PIL (Pillow)
+- shap==0.49.1 (optional, auto-disabled if missing)
+- captum==0.8.0 (for Integrated Gradients)
+
+**Retrieval & Indexing:**
+- faiss-cpu==1.13.0
+
+**Agents & LLM Integration:**
+- langchain
+- requests (for API calls)
+
+**Web Framework:**
+- streamlit==1.50.0
+- python-dotenv (for environment variables)
+
+See `requirements.txt` for exact versions.
+
+---
+
+## ⚙️ Key Configuration Files
+
+### `config.py`
+Centralized settings for:
+- API tokens (HuggingFace, Wandb, OpenAI, etc.)
+- Model hyperparameters (learning rate, batch size, epochs)
+- Data paths and splits
+- XAI thresholds and parameters
+
+**Before running anything, fill in your API keys in `config.py` line ~22:**
+```python
+HF_TOKEN = "hf_your_huggingface_token"
+```
+
+### `.env` (Optional)
+Alternative to `config.py` for sensitive secrets:
+```
+HF_TOKEN=hf_xxx
+WANDB_API_KEY=wandb_xxx
+OPENAI_API_KEY=sk_xxx
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### 1. SHAP ImportError
+**Problem:** `No module named 'shap'`  
+**Solution:** App continues without SHAP; install with `pip install shap` if needed.
+
+### 2. Plotly Deprecation Warnings
+**Problem:** "The keyword arguments have been deprecated..."  
+**Solution:** Warnings are benign; UI still renders correctly. Uses modern `config={}` internally.
+
+### 3. Port Already in Use
+**Problem:** `Port 8505 is already in use`  
+**Solution:** 
+```bash
+# Find & kill old Streamlit processes
+pkill -f 'streamlit run'
+# Or use a different port
+python3 -m streamlit run app.py --server.port 8506
+```
+
+### 4. Out of Memory
+**Problem:** `CUDA out of memory` or system RAM maxed  
+**Solution:** 
+- Use CPU only: `torch.device("cpu")`
+- Reduce batch size in `config.py`
+- Reduce FAISS index size
+
+---
+
+## 📞 Support & Contributing
+
+**Questions?** Open an issue or contact the authors.
+
+**Want to extend?** Key extension points:
+- Add new XAI methods in `src/explainability/xai_engine.py`
+- Custom agents in `src/agents/`
+- New model architectures in `src/training/multimodal_predictor.py`
+
+---
+## 🎓 Citation
+
+If you use this project in research or publications, please cite:
+
+```bibtex
+@software{trial2_2026,
+  author = {AI Research Team},
+  title = {Multimodal Clinical Intelligence System with XAI and RAG},
+  year = {2026},
+  url = {https://github.com/KRUSHNA453/Multiagent-clinical-shap}
+}
+```
+
+---
+
+## 👥 Authors & Acknowledgments
+
+**Development Team:**  
+- Lead Developer: Souta Palliashokkumar
+- Advisors: Clinical AI Research Group
+
+**Powered by:**
+- HuggingFace (Transformers, Models Hub)
+- Meta AI (PyTorch)
+- Google (Grad-CAM, XAI research)
+- SHAP team (Explainability)
+- Streamlit team (Interactive dashboards)
+
+---
+
+## 📄 License
+
+This project is released under the **MIT License**. See `LICENSE` file for details.
+
+---
+## �📚 References
 
 - DenseNet: Huang et al. (2017). "Densely Connected Convolutional Networks." CVPR.
 - CheXNet: Rajpurkar et al. (2017). "CheXNet: Radiologist-Level Pneumonia Detection on CXR."
